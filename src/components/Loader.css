@@ -1,0 +1,32 @@
+.loader-container {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #030505;
+  backdrop-filter: blur(10px);
+}
+
+.loader-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.loader-logo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.loader-text {
+  font-family: var(--display-font, 'Inter', sans-serif);
+  font-size: 14px;
+  letter-spacing: 0.15em;
+  color: #fff;
+  text-transform: uppercase;
+}

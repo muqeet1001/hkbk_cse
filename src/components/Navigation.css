@@ -1,0 +1,207 @@
+:root {
+  --bg-dark: #070604;
+  --text-primary: #fff9ef;
+  --text-secondary: #d8af70;
+  --text-muted: rgba(255, 249, 239, 0.66);
+  --border-subtle: rgba(255, 249, 239, 0.16);
+}
+
+.site-header {
+  position: fixed;
+  top: 0;
+  left: clamp(18px, 4.5vw, 72px);
+  right: clamp(18px, 4.5vw, 72px);
+  z-index: 1000;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 24px;
+  padding: 16px 18px;
+  border-bottom: 0;
+  background: transparent;
+  transition: padding 0.45s ease, border-color 0.45s ease,
+    background-color 0.45s ease, backdrop-filter 0.45s ease,
+    box-shadow 0.45s ease;
+  --nav-glass-alpha: 0.14;
+  --nav-border-alpha: 0.14;
+  --nav-shadow-alpha: 0.16;
+}
+
+.site-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+  background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0.03) 100%
+    ),
+    rgba(3, 5, 5, var(--nav-glass-alpha));
+  border: 1px solid rgba(255, 255, 255, var(--nav-border-alpha));
+  box-shadow: 0 18px 60px rgba(0, 0, 0, var(--nav-shadow-alpha));
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.site-header > * {
+  position: relative;
+  z-index: 1;
+}
+
+.site-header.video-ended {
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+
+.site-header.scrolled {
+  padding-top: 14px;
+  padding-bottom: 14px;
+  --nav-glass-alpha: 0.32;
+  --nav-border-alpha: 0.18;
+  --nav-shadow-alpha: 0.22;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.brand-logo {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 0 1px rgba(255, 249, 239, 0.22);
+}
+
+.brand-text {
+  color: var(--text-primary);
+  font-family: var(--display-font);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(18px, 2.6vw, 34px);
+}
+
+.nav-link {
+  position: relative;
+  color: rgba(255, 249, 239, 0.78);
+  font-family: var(--body-font);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.28s ease;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -8px;
+  height: 1px;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: var(--text-secondary);
+  transition: transform 0.32s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--text-primary);
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  transform: scaleX(1);
+}
+
+.apply-button {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 18px;
+  border: 1px solid rgba(255, 249, 239, 0.9);
+  border-radius: 999px;
+  background: rgba(255, 249, 239, 0.96);
+  color: #18312f;
+  font-family: var(--body-font);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0;
+  text-decoration: none;
+  transition: background 0.28s ease, color 0.28s ease, transform 0.28s ease,
+    border-color 0.28s ease;
+}
+
+.apply-button:hover {
+  transform: translateY(-2px);
+  border-color: var(--text-primary);
+  background: var(--text-primary);
+  color: var(--bg-dark);
+}
+
+@media (max-width: 1080px) {
+  .site-header {
+    grid-template-columns: auto auto;
+    left: 24px;
+    right: 24px;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .apply-button {
+    justify-self: end;
+  }
+}
+
+@media (max-width: 560px) {
+  .site-header {
+    gap: 12px;
+    left: 18px;
+    right: 18px;
+    padding: 14px 0 16px;
+  }
+
+  .brand-logo {
+    width: 40px;
+    height: 40px;
+    flex-basis: 40px;
+  }
+
+  .brand-text {
+    max-width: 132px;
+    white-space: normal;
+    font-size: 12px;
+  }
+
+  .apply-button {
+    min-height: 38px;
+    padding: 10px 13px;
+    font-size: 12px;
+  }
+}

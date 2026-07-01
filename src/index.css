@@ -1,0 +1,42 @@
+@import '@fontsource/bodoni-moda/400.css';
+@import '@fontsource/bodoni-moda/500-italic.css';
+@import '@fontsource/bodoni-moda/700.css';
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/700.css';
+
+:root {
+  --display-font: 'Bodoni Moda', 'Didot', 'Bodoni 72', 'Baskerville', serif;
+  --body-font: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+
+  font-family: var(--body-font);
+  color: #ffffff;
+  background: #030505;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  background: #030505;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100svh;
+  margin: 0;
+}
+
+button,
+a {
+  font: inherit;
+}
+
+#root {
+  min-height: 100svh;
+}

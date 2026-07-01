@@ -1,0 +1,12 @@
+.landing-page {
+  min-height: 100svh;
+  background: #030505;
+  color: #fff;
+  /* overflow: hidden is removed so we can scroll the pinned section */
+}
+
+/* Base styles are preserved in index.css if there were any, but here we can ensure our variables are set. */
+:root {
+  --display-font: 'Bodoni Moda', serif;
+  --body-font: 'Inter', sans-serif;
+}
