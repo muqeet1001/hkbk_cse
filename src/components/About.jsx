@@ -15,10 +15,10 @@ export default function About() {
 
   const stats = useMemo(
     () => [
-      { end: 150, suffix: "k", label: "Alumni Network" },
-      { end: 60, suffix: "%", label: "Placement Support" },
-      { end: 30, suffix: "", label: "Years of Excellence" },
-      { end: 24, suffix: "/7", label: "Placement Facility" },
+      { end: 95, suffix: "%", label: "Placement Rate" },
+      { end: 90, suffix: "%", label: "Academic Excellence" },
+      { end: 2000, suffix: "+", label: "Hackathon Participations" },
+      { end: 20, suffix: "+", label: "Startups With Funding" },
     ],
     []
   );
@@ -59,23 +59,15 @@ export default function About() {
           el.textContent = formatter.format(Math.round(state.value));
         };
 
-        gsap
-          .timeline()
-          .to(state, {
-            value: end * 1.04,
-            duration: 0.55,
-            ease: "power2.out",
-            onUpdate: update,
-          })
-          .to(state, {
-            value: end,
-            duration: 0.55,
-            ease: "expo.out",
-            onUpdate: update,
-            onComplete: () => {
-              el.textContent = formatter.format(end);
-            },
-          });
+        gsap.to(state, {
+          value: end,
+          duration: 2.5,
+          ease: "power3.out",
+          onUpdate: update,
+          onComplete: () => {
+            el.textContent = formatter.format(end);
+          },
+        });
       });
     };
 
@@ -231,9 +223,8 @@ export default function About() {
           <div className="about-story__stats">
             {stats.map((item, index) => (
               <article
-                className={`about-story__stat about-story__stat--${
-                  index === 0 ? "hero" : index === 1 ? "a" : index === 2 ? "b" : "c"
-                }`}
+                className={`about-story__stat about-story__stat--${index === 0 ? "hero" : index === 1 ? "a" : index === 2 ? "b" : "c"
+                  }`}
                 key={item.label}
               >
                 <div className="about-story__metric">

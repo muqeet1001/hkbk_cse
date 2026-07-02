@@ -7,6 +7,8 @@ import Loader from "./components/Loader";
 import Navigation from "./components/Navigation";
 import Hero from "./components/Hero";
 import About from "./components/About";
+import Timeline from "./components/Timeline";
+import Faculty from "./components/Faculty";
 import "./App.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -21,10 +23,14 @@ function App() {
     if (reduceMotion) return;
 
     const lenis = new Lenis({
-      lerp: 0.09,
+      lerp: 0.1,
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       smoothTouch: false,
-      wheelMultiplier: 0.9,
+      wheelMultiplier: 1,
+      touchMultiplier: 2,
+      infinite: false,
     });
 
     const raf = (time) => {
@@ -51,6 +57,8 @@ function App() {
         <Navigation />
         <Hero />
         <About />
+        <Timeline />
+        <Faculty />
       </main>
     </>
   );
