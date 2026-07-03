@@ -283,18 +283,3 @@
         line-height: 1.6;
     }
 }
-
-.faculty__content {
-    padding: 28px 16px;
-    border-radius: 16px;
-}
-
-.faculty__label {
-    font-size: 10px;
-    margin-bottom: 14px;
-}
-
-.faculty__heading {
-    margin-bottom: 14px;
-}
-}
