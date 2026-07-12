@@ -110,13 +110,14 @@ export default function Timeline() {
         gsap.set(progress, { scaleX: 0 });
 
         const ctx = gsap.context(() => {
-            const scrollDistance = track.scrollWidth - window.innerWidth + 400;
+            const scrollDistance = () =>
+                track.scrollWidth - window.innerWidth + 400;
 
             const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: pin,
                     start: "top top",
-                    end: `+=${scrollDistance * 1.2}`,
+                    end: () => `+=${scrollDistance() * 1.2}`,
                     scrub: 1,
                     pin: true,
                     anticipatePin: 1,
@@ -125,7 +126,7 @@ export default function Timeline() {
             });
 
             tl.to(track, {
-                x: -scrollDistance,
+                x: () => -scrollDistance(),
                 ease: "none",
                 duration: 1,
             }).to(progress, {
@@ -169,10 +170,12 @@ export default function Timeline() {
     }, []);
 
     return (
-        <section className="timeline" ref={sectionRef}>
+        <section className="timeline" id="programs" ref={sectionRef}>
             <div className="timeline__header">
-                <div className="timeline__label">Journey highlights</div>
-                <h2 className="timeline__heading">Timeline</h2>
+                <div className="timeline__label">(CURRICULUM)</div>
+                <h2 className="timeline__heading">
+                    THE <em className="timeline__heading-em">JOURNEY</em>
+                </h2>
             </div>
 
             <div className="timeline__pin" ref={pinRef}>

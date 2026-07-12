@@ -148,6 +148,8 @@ export default function Hero() {
         muted
         playsInline
         autoPlay
+        aria-hidden="true"
+        disablePictureInPicture
       ></video>
 
       <div className="hero-overlay"></div>

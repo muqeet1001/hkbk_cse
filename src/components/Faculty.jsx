@@ -74,7 +74,7 @@ export default function Faculty() {
     }, []);
 
     return (
-        <section className="faculty" ref={sectionRef}>
+        <section className="faculty" id="faculty" ref={sectionRef}>
             <div className="faculty__container">
                 <div className="faculty__floating-images">
                     {facultyData.map((member, index) => (
@@ -84,7 +84,7 @@ export default function Faculty() {
                             ref={(el) => (cardsRef.current[index] = el)}
                             style={{ top: member.position.top, left: member.position.left, transform: `rotate(${member.position.rotation}deg)` }}
                         >
-                            <img src={member.image} alt={member.name} className="faculty__image" loading="lazy" />
+                            <img src={member.image} alt={member.name} className="faculty__image" loading="lazy" decoding="async" />
                             <div className="faculty__tooltip">
                                 <div className="faculty__tooltip-name">{member.name}</div>
                                 <div className="faculty__tooltip-role">{member.role}</div>
@@ -94,7 +94,7 @@ export default function Faculty() {
                 </div>
 
                 <div className="faculty__content">
-                    <div className="faculty__label">OUR FACULTY</div>
+                    <div className="faculty__label">(FACULTY)</div>
                     <h2 className="faculty__heading">
                         <span className="faculty__heading-line">MEET OUR</span>
                         <span className="faculty__heading-line faculty__heading-line--accent">EXPERT FACULTY</span>

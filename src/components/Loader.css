@@ -2,48 +2,111 @@
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: #000000;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  background: transparent;
+}
+
+.loader-curtain {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: #000000;
+  will-change: transform;
 }
 
 .loader-content {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 24px;
+  gap: 22px;
 }
 
 .loader-logo {
-  width: clamp(80px, 12vw, 140px);
-  height: clamp(80px, 12vw, 140px);
+  width: clamp(72px, 10vw, 120px);
+  height: clamp(72px, 10vw, 120px);
   border-radius: 16px;
   object-fit: cover;
-  box-shadow: 0 10px 40px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 50px rgba(255, 255, 255, 0.12);
+  will-change: transform, opacity, filter;
 }
 
 .loader-text {
+  display: flex;
   font-family: var(--body-font);
-  font-size: clamp(18px, 2vw, 24px);
+  font-size: clamp(16px, 1.8vw, 20px);
   font-weight: 600;
-  letter-spacing: 0.3em;
+  letter-spacing: 0.34em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--text-primary, #fff9ef);
+}
+
+.loader-letter {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+.loader-progress {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 6px;
+}
+
+.loader-progress-track {
+  width: clamp(140px, 20vw, 220px);
+  height: 1px;
+  background: rgba(255, 249, 239, 0.16);
+  overflow: hidden;
+}
+
+.loader-progress-bar {
+  width: 100%;
+  height: 100%;
+  background: var(--text-secondary, #3b82f6);
+  transform-origin: left center;
+  transform: scaleX(0);
+  will-change: transform;
+}
+
+.loader-progress-count {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  font-family: var(--body-font);
+  font-size: 12px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+  color: rgba(255, 249, 239, 0.6);
+  min-width: 34px;
+}
+
+.loader-progress-suffix {
+  font-size: 10px;
+  color: rgba(255, 249, 239, 0.4);
 }
 
 @media (max-width: 768px) {
   .loader-content {
-    gap: 20px;
+    gap: 18px;
   }
 
   .loader-logo {
-    width: 100px;
-    height: 100px;
+    width: 84px;
+    height: 84px;
   }
 
   .loader-text {
-    font-size: 16px;
+    font-size: 14px;
+    letter-spacing: 0.28em;
+  }
+
+  .loader-progress-track {
+    width: 140px;
   }
 }

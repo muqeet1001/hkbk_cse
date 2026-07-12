@@ -1,1 +1,53 @@
-/* Custom cursor styles removed - using default cursor */
+body.has-custom-cursor,
+body.has-custom-cursor * {
+  cursor: none;
+}
+
+.custom-cursor,
+.custom-cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  pointer-events: none;
+  opacity: 0;
+  will-change: transform;
+}
+
+.custom-cursor {
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 249, 239, 0.55);
+  transition: width 0.28s var(--ease-out, ease), height 0.28s var(--ease-out, ease),
+    margin 0.28s var(--ease-out, ease), border-color 0.28s ease,
+    background-color 0.28s ease, transform 0.15s ease;
+}
+
+.custom-cursor-dot {
+  width: 5px;
+  height: 5px;
+  margin: -2.5px 0 0 -2.5px;
+  border-radius: 50%;
+  background: var(--text-secondary, #3b82f6);
+}
+
+.custom-cursor.hover {
+  width: 64px;
+  height: 64px;
+  margin: -32px 0 0 -32px;
+  border-color: rgba(59, 130, 246, 0.85);
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+.custom-cursor.active {
+  transform: scale(0.82);
+}
+
+@media (pointer: coarse) {
+  .custom-cursor,
+  .custom-cursor-dot {
+    display: none;
+  }
+}

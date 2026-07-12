@@ -203,6 +203,7 @@ export default function About() {
                 src="/lab.png"
                 alt="Students collaborating in a modern computer lab"
                 loading="lazy"
+                decoding="async"
               />
             </div>
           </div>
@@ -218,7 +219,7 @@ export default function About() {
         </div>
       </div>
 
-      <div className="about-story__statsSection" ref={statsSectionRef}>
+      <div className="about-story__statsSection" id="placements" ref={statsSectionRef}>
         <div className="about-story__statsWrap">
           <div className="about-story__stats">
             {stats.map((item, index) => (

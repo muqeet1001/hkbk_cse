@@ -4,11 +4,13 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import Loader from "./components/Loader";
+import CustomCursor from "./components/CustomCursor";
 import Navigation from "./components/Navigation";
 import Hero from "./components/Hero";
 import About from "./components/About";
 import Timeline from "./components/Timeline";
 import Faculty from "./components/Faculty";
+import Footer from "./components/Footer";
 import "./App.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -31,6 +33,7 @@ function App() {
       wheelMultiplier: 1,
       touchMultiplier: 2,
       infinite: false,
+      anchors: { offset: -100 },
     });
 
     const raf = (time) => {
@@ -52,6 +55,8 @@ function App() {
   return (
     <>
       {loading && <Loader onComplete={() => setLoading(false)} />}
+      <CustomCursor />
+      <div className="grain-overlay" aria-hidden="true"></div>
 
       <main className="landing-page">
         <Navigation />
@@ -59,6 +64,7 @@ function App() {
         <About />
         <Timeline />
         <Faculty />
+        <Footer />
       </main>
     </>
   );

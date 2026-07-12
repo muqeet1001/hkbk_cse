@@ -8,9 +8,19 @@
   --display-font: 'Bodoni Moda', 'Didot', 'Bodoni 72', 'Baskerville', serif;
   --body-font: 'Inter', 'Helvetica Neue', Arial, sans-serif;
 
+  --bg-dark: #030505;
+  --bg-cream: #f5f1eb;
+  --text-primary: #fff9ef;
+  --text-dark: #11110e;
+  --accent: #3b82f6;
+  --page-gutter: clamp(18px, 4.5vw, 72px);
+  --focus-ring: 2px solid rgba(59, 130, 246, 0.9);
+  --focus-offset: 2px;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
   font-family: var(--body-font);
   color: #ffffff;
-  background: #030505;
+  background: var(--bg-dark);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -36,6 +46,39 @@ body {
 button,
 a {
   font: inherit;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+::selection {
+  background: var(--accent);
+  color: #ffffff;
+}
+
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  pointer-events: none;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 #root {

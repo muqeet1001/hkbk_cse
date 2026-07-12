@@ -4,6 +4,7 @@
     color: #111111;
     padding: clamp(120px, 15vw, 200px) 0;
     overflow: hidden;
+    scroll-margin-top: clamp(90px, 12vh, 130px);
 }
 
 .faculty__container {
@@ -62,6 +63,13 @@
     height: 100%;
     object-fit: cover;
     display: block;
+    filter: grayscale(65%) contrast(1.04);
+    transition: filter 0.45s ease, transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.faculty__image-card:hover .faculty__image {
+    filter: grayscale(0%) contrast(1);
+    transform: scale(1.07);
 }
 
 .faculty__tooltip {
@@ -110,10 +118,10 @@
 .faculty__label {
     font-family: var(--body-font);
     font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.15em;
+    font-weight: 400;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: #666666;
+    color: rgba(17, 17, 14, 0.62);
     margin-bottom: 20px;
 }
 
