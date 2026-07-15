@@ -1,186 +1,236 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./Hero.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function Hero() {
-  const sectionRef = useRef(null);
-  const videoRef = useRef(null);
-  const titleRef = useRef(null);
-  const taglineRef = useRef(null);
-  const descriptionRef = useRef(null);
-  const scrollRef = useRef(null);
+export default function Hero({ started }) {
+    const sectionRef = useRef(null);
+    const videoRef = useRef(null);
+    const scrimRef = useRef(null);
+    const sideRef = useRef(null);
+    const indexRef = useRef(null);
+    const kickerRef = useRef(null);
+    const wordInnerRef = useRef(null);
+    const deptRef = useRef(null);
+    const scrollRef = useRef(null);
+    const playedRef = useRef(false);
+    const entranceCtxRef = useRef(null);
 
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
+    const reduceMotion = () =>
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    video.playbackRate = 0.7;
+    // Slow the footage down a touch for a cinematic feel.
+    useEffect(() => {
+        const video = videoRef.current;
+        if (video) video.playbackRate = 0.7;
+    }, []);
 
-    const handleEnded = () => {
-      window.dispatchEvent(new Event("heroVideoComplete"));
+    // Pre-entrance hidden state on mount (nothing flashes while the loader
+    // is still covering the screen).
+    useLayoutEffect(() => {
+        if (reduceMotion()) return;
+        gsap.set(videoRef.current, {
+            scale: 1.14,
+            filter: "blur(14px)",
+        });
+        gsap.set(scrimRef.current, { autoAlpha: 0 });
+        gsap.set([sideRef.current, indexRef.current], { autoAlpha: 0, y: 20 });
+        gsap.set([kickerRef.current, deptRef.current, scrollRef.current], {
+            autoAlpha: 0,
+            y: 18,
+        });
+        gsap.set(wordInnerRef.current, { yPercent: 118 });
+    }, []);
+
+    // Play the entrance once — guarded so the loader signal and the safety
+    // fallback can't double-fire it.
+    const playEntrance = () => {
+        if (playedRef.current) return;
+        playedRef.current = true;
+
+        const done = () =>
+            window.dispatchEvent(new Event("heroVideoComplete"));
+
+        if (reduceMotion()) {
+            done();
+            return;
+        }
+
+        entranceCtxRef.current = gsap.context(() => {
+            gsap
+                .timeline({ onComplete: done })
+                // Cinematic focus-in: the footage settles and sharpens.
+                .to(videoRef.current, {
+                    scale: 1,
+                    filter: "blur(0px)",
+                    duration: 1.6,
+                    ease: "expo.out",
+                })
+                .to(
+                    scrimRef.current,
+                    { autoAlpha: 1, duration: 1.2, ease: "power2.out" },
+                    0
+                )
+                .to(
+                    [sideRef.current, indexRef.current],
+                    {
+                        autoAlpha: 1,
+                        y: 0,
+                        duration: 0.9,
+                        ease: "power3.out",
+                        stagger: 0.12,
+                    },
+                    "-=1.1"
+                )
+                .to(
+                    kickerRef.current,
+                    { autoAlpha: 1, y: 0, duration: 0.8, ease: "power3.out" },
+                    "-=0.9"
+                )
+                .to(
+                    wordInnerRef.current,
+                    { yPercent: 0, duration: 1.15, ease: "expo.out" },
+                    "-=0.6"
+                )
+                .to(
+                    deptRef.current,
+                    { autoAlpha: 1, y: 0, duration: 0.85, ease: "power3.out" },
+                    "-=0.75"
+                )
+                .to(
+                    scrollRef.current,
+                    { autoAlpha: 1, y: 0, duration: 0.8, ease: "power3.out" },
+                    "-=0.7"
+                );
+        }, sectionRef);
     };
 
-    video.addEventListener("ended", handleEnded);
+    // Play when the loader hands off (started flips true).
+    useEffect(() => {
+        if (started) playEntrance();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [started]);
 
-    return () => {
-      video.removeEventListener("ended", handleEnded);
-    };
-  }, []);
+    // Safety net: never leave the hero blank if the loader signal is missed.
+    useEffect(() => {
+        const t = setTimeout(playEntrance, 6000);
+        return () => {
+            clearTimeout(t);
+            if (entranceCtxRef.current) entranceCtxRef.current.revert();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-  useEffect(() => {
-    const letters = titleRef.current?.querySelectorAll(".letter");
-    if (!letters?.length) return;
+    // Scroll choreography — cinematic parallax as the hero leaves.
+    useLayoutEffect(() => {
+        const section = sectionRef.current;
+        if (!section || reduceMotion()) return;
 
-    letters.forEach((letter) => {
-      gsap.set(letter, { opacity: 0, y: 150 });
-    });
+        const ctx = gsap.context(() => {
+            gsap.to(videoRef.current, {
+                scale: 1.16,
+                yPercent: 8,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: section,
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: 1,
+                },
+            });
+            gsap.to(".hero-ui", {
+                autoAlpha: 0,
+                yPercent: -8,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: section,
+                    start: "top top",
+                    end: "62% top",
+                    scrub: 1,
+                },
+            });
+            gsap.to(scrimRef.current, {
+                opacity: 1.35,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: section,
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: 1,
+                },
+            });
+        }, section);
 
-    gsap.set([taglineRef.current, descriptionRef.current, scrollRef.current], {
-      opacity: 0,
-      y: 100,
-    });
+        return () => ctx.revert();
+    }, []);
 
-    const tl = gsap.timeline({ delay: 3 });
-
-    letters.forEach((letter, index) => {
-      tl.to(
-        letter,
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.9,
-          ease: "power3.out",
-        },
-        index * 0.5
-      );
-    });
-
-    tl.to(
-      [taglineRef.current, descriptionRef.current, scrollRef.current],
-      {
-        opacity: 1,
-        y: 0,
-        duration: 1.1,
-        ease: "power3.out",
-        stagger: 0.3,
-      },
-      "+=0.5"
-    );
-
-    return () => tl.kill();
-  }, []);
-
-  useEffect(() => {
-    const section = sectionRef.current;
-    const video = videoRef.current;
-    if (!section || !video) return;
-
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-    if (reduceMotion) return;
-
-    const ctx = gsap.context(() => {
-      gsap.to(video, {
-        yPercent: -10,
-        scale: 1.08,
-        ease: "none",
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: "bottom top",
-          scrub: 1,
-        },
-      });
-
-      gsap.to(".hero-overlay", {
-        opacity: 0.75,
-        ease: "none",
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: "bottom top",
-          scrub: 1,
-        },
-      });
-
-      gsap.to(".hero-content", {
-        yPercent: -12,
-        ease: "none",
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: "bottom top",
-          scrub: 1,
-        },
-      });
-
-      gsap.to(".hero-scroll-line", {
-        scaleX: 1.8,
-        transformOrigin: "left center",
-        ease: "none",
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: "bottom top",
-          scrub: 1,
-        },
-      });
-    }, section);
-
-    return () => ctx.revert();
-  }, []);
-
-  return (
-    <section
-      className="hero-shell"
-      id="home"
-      aria-label="HKBK CSE hero"
-      ref={sectionRef}
-    >
-      <video
-        ref={videoRef}
-        className="hero-video"
-        src="/video/hero.mp4"
-        muted
-        playsInline
-        autoPlay
-        aria-hidden="true"
-        disablePictureInPicture
-      ></video>
-
-      <div className="hero-overlay"></div>
-
-      <div className="hero-content">
-        <div className="hero-layout">
-          <div className="hero-text-left" ref={titleRef}>
-            <h1 className="hero-title">
-              <span className="letter">H</span>
-              <span className="letter">K</span>
-              <span className="letter">B</span>
-              <span className="letter">K</span>
+    return (
+        <section
+            className="hero"
+            id="home"
+            aria-label="HKBK — Computer Science & Engineering"
+            ref={sectionRef}
+        >
+            <h1 className="hero-sr">
+                HKBK — Computer Science &amp; Engineering
             </h1>
-          </div>
 
-          <div className="hero-text-right">
-            <p className="hero-tagline" ref={taglineRef}>
-              Computer Science & Engineering
-            </p>
-            <p className="hero-description" ref={descriptionRef}>
-              Welcome to the Computer Science & Engineering Department, where
-              innovation is cultivated, research drives discovery, and
-              future-ready engineers are empowered to build intelligent systems.
-            </p>
-            <div className="hero-scroll" ref={scrollRef}>
-              <span className="hero-scroll-text">Scroll to explore</span>
-              <div className="hero-scroll-line" />
+            {/* Full-bleed cinematic footage — the hero */}
+            <div className="hero-media">
+                <video
+                    ref={videoRef}
+                    className="hero-video"
+                    src="/video/hero.mp4"
+                    muted
+                    loop
+                    playsInline
+                    autoPlay
+                    aria-hidden="true"
+                    disablePictureInPicture
+                />
+                <div className="hero-scrim" ref={scrimRef} />
             </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
+
+            {/* Restrained editorial overlay */}
+            <div className="hero-ui">
+                <span className="hero-ui__side" ref={sideRef}>
+                    Bengaluru — India
+                </span>
+
+                <span className="hero-ui__index" ref={indexRef}>
+                    (01 — Home)
+                </span>
+
+                <div className="hero-ui__lead">
+                    <span className="hero-ui__kicker" ref={kickerRef}>
+                        Department of Computer Science &amp; Engineering
+                    </span>
+
+                    <h2 className="hero-ui__word" aria-hidden="true">
+                        <span className="hero-ui__wordMask">
+                            <span
+                                className="hero-ui__wordInner"
+                                ref={wordInnerRef}
+                            >
+                                HKBK
+                            </span>
+                        </span>
+                    </h2>
+
+                    <p className="hero-ui__dept" ref={deptRef}>
+                        <em>Where ideas learn to compute</em> — innovation
+                        cultivated, research-driven, future-ready engineers
+                        empowered.
+                    </p>
+                </div>
+
+                <a className="hero-ui__scroll" href="#about" ref={scrollRef}>
+                    <span className="hero-ui__scrollLabel">Scroll</span>
+                    <span className="hero-ui__scrollLine" />
+                </a>
+            </div>
+        </section>
+    );
 }

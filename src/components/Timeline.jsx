@@ -5,11 +5,12 @@ import "./Timeline.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const timelineData = [
+const chapters = [
     {
-        phase: "01",
-        title: "Foundation",
-        date: "Semester 1-2",
+        num: "01",
+        year: "First Year",
+        sem: "Semester 1 — 2",
+        theme: "Foundation",
         items: [
             "Programming Fundamentals",
             "C Programming",
@@ -19,9 +20,10 @@ const timelineData = [
         ],
     },
     {
-        phase: "02",
-        title: "Core Computer Science",
-        date: "Semester 3-4",
+        num: "02",
+        year: "Second Year",
+        sem: "Semester 3 — 4",
+        theme: "Core Computer Science",
         items: [
             "Data Structures",
             "Algorithms",
@@ -31,138 +33,155 @@ const timelineData = [
         ],
     },
     {
-        phase: "03",
-        title: "Software Development",
-        date: "Semester 5-6",
+        num: "03",
+        year: "Third Year",
+        sem: "Semester 5 — 6",
+        theme: "Software Development",
         items: [
-            "HTML",
-            "CSS",
+            "HTML & CSS",
             "JavaScript",
             "React",
             "Backend Development",
+            "APIs & Databases",
         ],
     },
     {
-        phase: "04",
-        title: "Emerging Technologies",
-        date: "Semester 7",
+        num: "04",
+        year: "Fourth Year",
+        sem: "Semester 7 — 8",
+        theme: "Emerging Technologies",
         items: [
             "Artificial Intelligence",
             "Machine Learning",
             "Cloud Computing",
             "Cyber Security",
-            "Internet of Things",
-        ],
-    },
-    {
-        phase: "05",
-        title: "Industry Experience",
-        date: "Semester 7-8",
-        items: [
-            "Hackathons",
-            "Open Source",
-            "Internship",
-            "Team Projects",
-            "Industry Mentorship",
-        ],
-    },
-    {
-        phase: "06",
-        title: "Career Ready",
-        date: "Semester 8",
-        items: [
             "Capstone Project",
-            "Resume Building",
-            "Placement Training",
-            "Technical Interviews",
-            "Career Opportunities",
         ],
     },
 ];
 
 export default function Timeline() {
     const sectionRef = useRef(null);
-    const pinRef = useRef(null);
-    const trackRef = useRef(null);
-    const progressRef = useRef(null);
+    const headerRef = useRef(null);
 
     useLayoutEffect(() => {
         const section = sectionRef.current;
-        const pin = pinRef.current;
-        const track = trackRef.current;
-        const progress = progressRef.current;
+        if (!section) return;
 
-        if (!section || !pin || !track || !progress) return;
-
-        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const reduceMotion = window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+        ).matches;
         if (reduceMotion) return;
 
-        const isMobile = window.matchMedia("(max-width: 768px)").matches;
-        if (isMobile) return;
-
-        const capsules = track.querySelectorAll(".timeline__capsule");
-        const bullets = track.querySelectorAll(".timeline__bullet");
-        const dates = track.querySelectorAll(".timeline__date");
-
-        gsap.set(capsules, { opacity: 0.4, scale: 0.9 });
-        gsap.set(bullets, { opacity: 0, y: 10 });
-        gsap.set(dates, { opacity: 0.3 });
-        gsap.set(progress, { scaleX: 0 });
-
         const ctx = gsap.context(() => {
-            const scrollDistance = () =>
-                track.scrollWidth - window.innerWidth + 400;
+            // ---- Header: masked reveal ----
+            const header = headerRef.current;
+            if (header) {
+                const inner = header.querySelector(".tl2__titleInner");
+                const eyebrow = header.querySelector(".tl2__eyebrow");
+                const lede = header.querySelector(".tl2__lede");
 
-            const tl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: pin,
-                    start: "top top",
-                    end: () => `+=${scrollDistance() * 1.2}`,
-                    scrub: 1,
-                    pin: true,
-                    anticipatePin: 1,
-                    invalidateOnRefresh: true,
-                },
-            });
+                gsap.set(inner, { yPercent: 115 });
+                gsap.set([eyebrow, lede], { y: 26, autoAlpha: 0 });
 
-            tl.to(track, {
-                x: () => -scrollDistance(),
-                ease: "none",
-                duration: 1,
-            }).to(progress, {
-                scaleX: 1,
-                ease: "none",
-                duration: 1,
-            }, 0);
+                gsap
+                    .timeline({
+                        scrollTrigger: {
+                            trigger: header,
+                            start: "top 82%",
+                            once: true,
+                        },
+                    })
+                    .to(eyebrow, {
+                        y: 0,
+                        autoAlpha: 1,
+                        duration: 0.8,
+                        ease: "power3.out",
+                    })
+                    .to(
+                        inner,
+                        { yPercent: 0, duration: 1.15, ease: "expo.out" },
+                        "-=0.5"
+                    )
+                    .to(
+                        lede,
+                        {
+                            y: 0,
+                            autoAlpha: 1,
+                            duration: 0.9,
+                            ease: "power3.out",
+                        },
+                        "-=0.8"
+                    );
+            }
 
-            capsules.forEach((capsule) => {
-                const phase = capsule.closest(".timeline__phase");
-                const phaseBullets = phase.querySelectorAll(".timeline__bullet");
-                const phaseDate = phase.querySelector(".timeline__date");
+            // ---- Each grid cell: masked theme + staggered ledger ----
+            const cells = section.querySelectorAll(".tl2__cell");
 
-                ScrollTrigger.create({
-                    trigger: capsule,
-                    start: "left 60%",
-                    end: "right 40%",
-                    containerAnimation: tl,
-                    onEnter: () => {
-                        gsap.to(capsule, { opacity: 1, scale: 1, duration: 0.6, ease: "power2.out" });
-                        gsap.to(phaseDate, { opacity: 1, duration: 0.4, ease: "power2.out" });
-                        gsap.to(phaseBullets, { opacity: 1, y: 0, duration: 0.4, stagger: 0.08, ease: "power2.out" });
-                    },
-                    onLeave: () => {
-                        gsap.to(capsule, { opacity: 0.4, scale: 0.9, duration: 0.4 });
-                        gsap.to(phaseDate, { opacity: 0.3, duration: 0.3 });
-                    },
-                    onEnterBack: () => {
-                        gsap.to(capsule, { opacity: 1, scale: 1, duration: 0.6, ease: "power2.out" });
-                        gsap.to(phaseDate, { opacity: 1, duration: 0.4 });
-                    },
-                    onLeaveBack: () => {
-                        gsap.to(capsule, { opacity: 0.4, scale: 0.9, duration: 0.4 });
-                        gsap.to(phaseDate, { opacity: 0.3, duration: 0.3 });
-                    },
-                });
+            cells.forEach((cell) => {
+                const head = cell.querySelector(".tl2__cellHead");
+                const themeInner = cell.querySelector(".tl2__themeInner");
+                const items = cell.querySelectorAll(".tl2__item");
+                const ghost = cell.querySelector(".tl2__ghost");
+
+                gsap.set(head, { y: 22, autoAlpha: 0 });
+                gsap.set(themeInner, { yPercent: 120 });
+                gsap.set(items, { y: 20, autoAlpha: 0 });
+                gsap.set(ghost, { autoAlpha: 0 });
+
+                gsap
+                    .timeline({
+                        scrollTrigger: {
+                            trigger: cell,
+                            start: "top 85%",
+                            once: true,
+                        },
+                    })
+                    .to(ghost, { autoAlpha: 1, duration: 1.1, ease: "power2.out" }, 0)
+                    .to(
+                        head,
+                        {
+                            y: 0,
+                            autoAlpha: 1,
+                            duration: 0.7,
+                            ease: "power3.out",
+                        },
+                        0
+                    )
+                    .to(
+                        themeInner,
+                        { yPercent: 0, duration: 1.05, ease: "expo.out" },
+                        0.1
+                    )
+                    .to(
+                        items,
+                        {
+                            y: 0,
+                            autoAlpha: 1,
+                            duration: 0.65,
+                            stagger: 0.07,
+                            ease: "power3.out",
+                        },
+                        0.35
+                    );
+
+                // Subtle parallax drift on the oversized ghost numeral.
+                if (ghost) {
+                    gsap.fromTo(
+                        ghost,
+                        { yPercent: -5 },
+                        {
+                            yPercent: 5,
+                            ease: "none",
+                            scrollTrigger: {
+                                trigger: cell,
+                                start: "top bottom",
+                                end: "bottom top",
+                                scrub: 1,
+                            },
+                        }
+                    );
+                }
             });
         }, section);
 
@@ -171,45 +190,69 @@ export default function Timeline() {
 
     return (
         <section className="timeline" id="programs" ref={sectionRef}>
-            <div className="timeline__header">
-                <div className="timeline__label">(CURRICULUM)</div>
-                <h2 className="timeline__heading">
-                    THE <em className="timeline__heading-em">JOURNEY</em>
-                </h2>
-            </div>
+            <div className="tl2__wrap">
+                <header className="tl2__header" ref={headerRef}>
+                    <div className="tl2__eyebrow">
+                        <span className="tl2__eyebrowDot" />
+                        (Curriculum) — Four Years
+                    </div>
+                    <h2 className="tl2__title">
+                        <span className="tl2__titleMask">
+                            <span className="tl2__titleInner">
+                                The <em className="tl2__titleEm">Journey</em>
+                            </span>
+                        </span>
+                    </h2>
+                    <p className="tl2__lede">
+                        A year-by-year roadmap of your Computer Science degree —
+                        from your first lines of code to an industry-ready
+                        engineer.
+                    </p>
+                </header>
 
-            <div className="timeline__pin" ref={pinRef}>
-                <div className="timeline__container">
-                    <div className="timeline__track" ref={trackRef}>
-                        {timelineData.map((phase, index) => (
-                            <div
-                                className={`timeline__phase timeline__phase--${index % 2 === 0 ? "top" : "bottom"}`}
-                                key={phase.phase}
-                            >
-                                <div className="timeline__capsule-wrapper">
-                                    <div className="timeline__capsule">
-                                        <span className="timeline__title">{phase.title}</span>
-                                    </div>
-                                    <div className="timeline__connector"></div>
-                                    <div className="timeline__dot"></div>
+                <div className="tl2__grid2">
+                    {chapters.map((c) => (
+                        <article className="tl2__cell" key={c.num}>
+                            <span className="tl2__ghost" aria-hidden="true">
+                                {c.num}
+                            </span>
+
+                            <div className="tl2__cellBody">
+                                <div className="tl2__cellHead">
+                                    <span className="tl2__index">{c.num}</span>
+                                    <span className="tl2__meta">
+                                        {c.year}
+                                        <span className="tl2__metaSep">/</span>
+                                        {c.sem}
+                                    </span>
                                 </div>
 
-                                <div className="timeline__date">{phase.date}</div>
+                                <h3 className="tl2__theme">
+                                    <span className="tl2__themeMask">
+                                        <span className="tl2__themeInner">
+                                            {c.theme}
+                                        </span>
+                                    </span>
+                                </h3>
 
-                                <ul className="timeline__list">
-                                    {phase.items.map((item, idx) => (
-                                        <li className="timeline__bullet" key={idx}>
-                                            {item}
+                                <ol className="tl2__list">
+                                    {c.items.map((item, i) => (
+                                        <li className="tl2__item" key={item}>
+                                            <span className="tl2__itemIndex">
+                                                {String(i + 1).padStart(2, "0")}
+                                            </span>
+                                            <span className="tl2__itemName">
+                                                {item}
+                                            </span>
+                                            <span className="tl2__itemArrow">
+                                                →
+                                            </span>
                                         </li>
                                     ))}
-                                </ul>
+                                </ol>
                             </div>
-                        ))}
-                    </div>
-
-                    <div className="timeline__line">
-                        <div className="timeline__progress" ref={progressRef}></div>
-                    </div>
+                        </article>
+                    ))}
                 </div>
             </div>
         </section>

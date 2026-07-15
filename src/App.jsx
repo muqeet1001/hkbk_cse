@@ -6,9 +6,13 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Loader from "./components/Loader";
 import Navigation from "./components/Navigation";
 import Hero from "./components/Hero";
+import Approvals from "./components/Approvals";
 import About from "./components/About";
+import VisionMission from "./components/VisionMission";
+import Campus from "./components/Campus";
 import Timeline from "./components/Timeline";
 import Faculty from "./components/Faculty";
+import Placements from "./components/Placements";
 import Footer from "./components/Footer";
 import "./App.css";
 
@@ -23,14 +27,13 @@ function App() {
     ).matches;
     if (reduceMotion) return;
 
+    // Heavier lerp => that buttery, weighted inertia premium sites have.
     const lenis = new Lenis({
-      lerp: 0.1,
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      lerp: 0.075,
       smoothWheel: true,
       smoothTouch: false,
-      wheelMultiplier: 1,
-      touchMultiplier: 2,
+      wheelMultiplier: 0.95,
+      touchMultiplier: 1.8,
       infinite: false,
       anchors: { offset: -100 },
     });
@@ -58,10 +61,14 @@ function App() {
 
       <main className="landing-page">
         <Navigation />
-        <Hero />
+        <Hero started={!loading} />
+        <Approvals />
         <About />
+        <VisionMission />
+        <Campus />
         <Timeline />
         <Faculty />
+        <Placements />
         <Footer />
       </main>
     </>

@@ -1,0 +1,184 @@
+.placements {
+    position: relative;
+    background: #f5f1eb;
+    color: #11110e;
+    padding: clamp(96px, 13vw, 200px) 0;
+    border-top: 1px solid rgba(17, 17, 14, 0.12);
+    --plc-accent: var(--accent, #3b82f6);
+    scroll-margin-top: clamp(90px, 12vh, 130px);
+}
+
+.plc__wrap {
+    width: min(1440px, 100%);
+    margin: 0 auto;
+    padding: 0 clamp(22px, 5vw, 80px);
+}
+
+.plc__header {
+    max-width: 760px;
+    margin-bottom: clamp(44px, 6vw, 84px);
+}
+
+.plc__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 11px;
+    margin-bottom: 22px;
+    font-family: var(--body-font);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(17, 17, 14, 0.6);
+}
+
+.plc__eyebrowDot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--plc-accent);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.16);
+}
+
+.plc__title {
+    margin: 0;
+    font-family: var(--display-font);
+    font-size: clamp(48px, 6.5vw, 116px);
+    font-weight: 500;
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    color: #11110e;
+}
+
+.plc__titleMask {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.08em;
+}
+
+.plc__titleInner {
+    display: block;
+    will-change: transform;
+}
+
+.plc__title em {
+    font-style: italic;
+    font-weight: 500;
+    color: var(--plc-accent);
+}
+
+.plc__note {
+    max-width: 480px;
+    margin: clamp(20px, 2.6vw, 30px) 0 0;
+    font-family: var(--body-font);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.7;
+    color: rgba(17, 17, 14, 0.62);
+}
+
+/* ---------- Placed cards ---------- */
+.plc__cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(14px, 1.8vw, 26px);
+    margin-bottom: clamp(64px, 9vw, 130px);
+}
+
+.plc__card {
+    position: relative;
+    margin: 0;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(17, 17, 14, 0.14);
+    transition: transform 0.5s var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1)),
+        box-shadow 0.5s ease;
+    will-change: transform;
+}
+
+.plc__cardImg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.plc__card:hover {
+    box-shadow: 0 34px 80px rgba(17, 17, 14, 0.22);
+}
+
+/* ---------- Recruiter logo wall ---------- */
+.plc__logosHead {
+    font-family: var(--body-font);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(17, 17, 14, 0.5);
+    margin-bottom: clamp(18px, 2.2vw, 28px);
+}
+
+.plc__logos {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid rgba(17, 17, 14, 0.14);
+    border-left: 1px solid rgba(17, 17, 14, 0.14);
+}
+
+.plc__cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: clamp(96px, 11vw, 150px);
+    padding: clamp(20px, 3vw, 40px);
+    border-right: 1px solid rgba(17, 17, 14, 0.14);
+    border-bottom: 1px solid rgba(17, 17, 14, 0.14);
+    background: #ffffff;
+}
+
+.plc__logo {
+    max-width: 100%;
+    max-height: clamp(30px, 3.2vw, 44px);
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    filter: grayscale(1);
+    opacity: 0.6;
+    transition: filter 0.45s var(--ease-out, ease),
+        opacity 0.45s var(--ease-out, ease), transform 0.45s ease;
+}
+
+.plc__cell:hover .plc__logo {
+    filter: grayscale(0);
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+.plc__cell--more {
+    font-family: var(--body-font);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(17, 17, 14, 0.45);
+    background: #f5f1eb;
+}
+
+@media (max-width: 860px) {
+    .plc__cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .plc__logos {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 460px) {
+    .plc__cards {
+        grid-template-columns: 1fr;
+        max-width: 340px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}

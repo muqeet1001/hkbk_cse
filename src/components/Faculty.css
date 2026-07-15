@@ -128,17 +128,25 @@
 .faculty__heading {
     margin: 0 0 20px;
     font-family: var(--display-font);
-    font-weight: 700;
+    font-weight: 500;
     line-height: 1;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
     display: flex;
     flex-direction: column;
     gap: 6px;
 }
 
 .faculty__heading-line {
-    font-size: clamp(36px, 5vw, 56px);
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.06em;
+    font-size: clamp(40px, 5.6vw, 64px);
     color: #111111;
+}
+
+.faculty__heading-inner {
+    display: block;
+    will-change: transform;
 }
 
 .faculty__heading-line--accent {
@@ -182,34 +190,52 @@
     }
 
     .faculty__container {
-        min-height: 500px;
+        min-height: auto;
         padding: 0 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
     }
 
     .faculty__floating-images {
-        opacity: 0.25;
-        pointer-events: none;
+        position: relative;
+        inset: auto;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        opacity: 1;
+        pointer-events: auto;
+        order: 2;
     }
 
-    .faculty__image-card--small {
-        width: 60px;
-        height: 75px;
+    .faculty__image-card {
+        position: relative;
+        top: auto !important;
+        left: auto !important;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 4 / 5;
         border-radius: 12px;
     }
 
-    .faculty__image-card--medium {
-        width: 75px;
-        height: 95px;
-        border-radius: 12px;
-    }
-
+    .faculty__image-card--small,
+    .faculty__image-card--medium,
     .faculty__image-card--large {
-        width: 90px;
-        height: 110px;
-        border-radius: 14px;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 4 / 5;
+    }
+
+    .faculty__image-card:hover {
+        transform: scale(1.02) translateY(-2px) !important;
+    }
+
+    .faculty__image-card:active {
+        transform: scale(1.04) translateY(-2px) !important;
     }
 
     .faculty__content {
+        order: 1;
         padding: 32px 24px;
         background: rgba(245, 241, 235, 0.98);
         max-width: 100%;
@@ -237,7 +263,25 @@
     }
 
     .faculty__tooltip {
-        display: none;
+        position: absolute;
+        opacity: 0;
+        transform: translateY(8px);
+        padding: 8px;
+        pointer-events: none;
+    }
+
+    .faculty__image-card:active .faculty__tooltip,
+    .faculty__image-card:hover .faculty__tooltip {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .faculty__tooltip-name {
+        font-size: 11px;
+    }
+
+    .faculty__tooltip-role {
+        font-size: 10px;
     }
 }
 
@@ -247,30 +291,12 @@
     }
 
     .faculty__container {
-        min-height: 450px;
+        min-height: auto;
         padding: 0 16px;
     }
 
     .faculty__floating-images {
-        opacity: 0.2;
-    }
-
-    .faculty__image-card--small {
-        width: 45px;
-        height: 60px;
-        border-radius: 10px;
-    }
-
-    .faculty__image-card--medium {
-        width: 60px;
-        height: 75px;
-        border-radius: 10px;
-    }
-
-    .faculty__image-card--large {
-        width: 75px;
-        height: 95px;
-        border-radius: 12px;
+        gap: 10px;
     }
 
     .faculty__content {
