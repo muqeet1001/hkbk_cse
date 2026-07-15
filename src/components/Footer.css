@@ -3,6 +3,9 @@
     background: #070604;
     color: var(--text-primary, #fff9ef);
     overflow: hidden;
+    /* Breathing room after the pinned Timeline so the footer never
+       overlaps the previous section. */
+    margin-top: clamp(60px, 8vw, 120px);
     scroll-margin-top: clamp(90px, 12vh, 130px);
 }
 
@@ -12,7 +15,7 @@
     padding: clamp(56px, 8vw, 100px) clamp(24px, 5vw, 72px) 0;
 }
 
-/* TOP ROW — CTA + SOCIAL STRIP */
+/* ===== TOP ROW — CTA + SOCIAL STRIP ===== */
 .footer__top {
     display: flex;
     align-items: flex-start;
@@ -63,6 +66,9 @@
 
 .footer__socials a {
     position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
     padding-top: 16px;
     font-family: var(--body-font);
     font-size: 11px;
@@ -75,8 +81,7 @@
     transition: color 0.28s ease;
 }
 
-.footer__socials a::before {
-    content: "";
+.footer__social-tick {
     position: absolute;
     top: 0;
     left: 0;
@@ -90,18 +95,18 @@
     color: var(--text-primary, #fff9ef);
 }
 
-.footer__socials a:hover::before {
+.footer__socials a:hover .footer__social-tick {
     width: 100%;
     background: var(--accent, #3b82f6);
 }
 
-/* GIANT EMAIL */
+/* ===== GIANT EMAIL ===== */
 .footer__email {
     display: flex;
     align-items: center;
     justify-content: flex-end;
     gap: clamp(10px, 1.6vw, 24px);
-    margin: clamp(64px, 10vw, 130px) 0 0;
+    margin: clamp(56px, 9vw, 120px) 0 0;
     padding-bottom: clamp(18px, 2.6vw, 34px);
     border-bottom: 1px solid rgba(255, 249, 239, 0.18);
     color: var(--text-primary, #fff9ef);
@@ -110,13 +115,23 @@
 }
 
 .footer__email-text {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.06em;
     font-family: var(--display-font);
-    font-size: clamp(28px, 6.4vw, 92px);
+    font-size: clamp(26px, 5.5vw, 80px);
     font-weight: 400;
     line-height: 0.95;
     letter-spacing: 0;
     text-transform: uppercase;
-    white-space: nowrap;
+    /* Prevent horizontal overflow on small screens */
+    max-width: 100%;
+    overflow-wrap: anywhere;
+}
+
+.footer__email-inner {
+    display: block;
+    will-change: transform;
 }
 
 .footer__email-arrow {
@@ -134,32 +149,48 @@
     transform: translate(6px, -6px);
 }
 
-/* META — ADDRESS + LINK COLUMNS */
+/* ===== META — ADDRESS + LINK COLUMNS ===== */
 .footer__meta {
     display: grid;
     grid-template-columns: 1.4fr 1fr 0.8fr;
     gap: clamp(28px, 4vw, 64px);
-    margin-top: clamp(48px, 6vw, 84px);
+    margin-top: clamp(44px, 6vw, 80px);
+}
+
+.footer__meta-col {
+    display: grid;
+    align-content: start;
+    gap: 16px;
+}
+
+.footer__col-title {
+    margin: 0;
+    font-family: var(--body-font);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255, 249, 239, 0.4);
+}
+
+.footer__col-links {
+    display: grid;
+    gap: 12px;
 }
 
 .footer__address {
+    margin: 0;
     font-family: var(--body-font);
     font-style: normal;
     font-size: 12px;
     font-weight: 400;
-    line-height: 1.9;
+    line-height: 1.8;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: rgba(255, 249, 239, 0.6);
 }
 
-.footer__col {
-    display: grid;
-    align-content: start;
-    gap: 14px;
-}
-
-.footer__col a {
+.footer__meta-col a {
     justify-self: start;
     font-family: var(--body-font);
     font-size: 12px;
@@ -171,18 +202,18 @@
     transition: color 0.25s ease, transform 0.25s ease;
 }
 
-.footer__col a:hover {
+.footer__meta-col a:hover {
     color: var(--accent, #3b82f6);
     transform: translateX(4px);
 }
 
-/* LEGAL ROW */
+/* ===== LEGAL ROW ===== */
 .footer__legal {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 18px;
-    margin-top: clamp(48px, 7vw, 96px);
+    margin-top: clamp(44px, 6vw, 88px);
     padding-bottom: clamp(36px, 5vw, 64px);
     font-family: var(--body-font);
     font-size: 11px;
@@ -192,27 +223,38 @@
     color: rgba(255, 249, 239, 0.45);
 }
 
-/* WORDMARK BAND */
-.footer__wordmark {
-    height: clamp(96px, 19vw, 280px);
+/* ===== 3D WORDMARK BAND ===== */
+.footer__wordmark-stage {
+    height: clamp(110px, 20vw, 300px);
     background: var(--accent, #3b82f6);
     overflow: hidden;
     display: flex;
+    align-items: center;
     justify-content: center;
+    /* This is the key to the 3D effect — perspective makes the rotateX
+       on the wordmark read as a real 3D tilt. */
+    perspective: 700px;
+}
+
+.footer__wordmark {
+    transform-origin: 50% 100%;
+    transform-style: preserve-3d;
+    will-change: transform;
 }
 
 .footer__wordmark span {
+    display: block;
     font-family: var(--body-font);
-    font-size: clamp(118px, 23.5vw, 345px);
+    font-size: clamp(72px, 20vw, 320px);
     font-weight: 700;
-    line-height: 0.94;
+    line-height: 0.9;
     letter-spacing: -0.05em;
     white-space: nowrap;
     color: #070604;
     user-select: none;
 }
 
-/* RESPONSIVE */
+/* ===== RESPONSIVE ===== */
 @media (max-width: 900px) {
     .footer__top {
         flex-direction: column;
@@ -231,7 +273,7 @@
         grid-template-columns: 1fr 1fr;
     }
 
-    .footer__address {
+    .footer__meta-col--wide {
         grid-column: 1 / -1;
     }
 }
@@ -250,6 +292,6 @@
 
     .footer__email-text {
         white-space: normal;
-        word-break: break-all;
+        word-break: break-word;
     }
 }

@@ -53,6 +53,13 @@ export default function Faculty() {
         const cards = cardsRef.current.filter(Boolean);
         gsap.set(cards, { opacity: 0, scale: 0.8, y: 30 });
 
+        const content = section.querySelector(".faculty__content");
+        const headingInners = content.querySelectorAll(
+            ".faculty__heading-inner"
+        );
+        const label = content.querySelector(".faculty__label");
+        const desc = content.querySelector(".faculty__description");
+
         const ctx = gsap.context(() => {
             ScrollTrigger.create({
                 trigger: section,
@@ -68,6 +75,40 @@ export default function Faculty() {
                     });
                 },
             });
+
+            // ---- Elyse-style masked reveal for the heading block ----
+            gsap.set(headingInners, { yPercent: 115 });
+            gsap.set([label, desc], { y: 26, autoAlpha: 0 });
+
+            gsap
+                .timeline({
+                    scrollTrigger: {
+                        trigger: content,
+                        start: "top 82%",
+                        once: true,
+                    },
+                })
+                .to(label, {
+                    y: 0,
+                    autoAlpha: 1,
+                    duration: 0.7,
+                    ease: "power3.out",
+                })
+                .to(
+                    headingInners,
+                    {
+                        yPercent: 0,
+                        duration: 1.1,
+                        ease: "expo.out",
+                        stagger: 0.12,
+                    },
+                    "-=0.4"
+                )
+                .to(
+                    desc,
+                    { y: 0, autoAlpha: 1, duration: 0.85, ease: "power3.out" },
+                    "-=0.7"
+                );
         }, section);
 
         return () => ctx.revert();
@@ -96,8 +137,12 @@ export default function Faculty() {
                 <div className="faculty__content">
                     <div className="faculty__label">(FACULTY)</div>
                     <h2 className="faculty__heading">
-                        <span className="faculty__heading-line">MEET OUR</span>
-                        <span className="faculty__heading-line faculty__heading-line--accent">EXPERT FACULTY</span>
+                        <span className="faculty__heading-line">
+                            <span className="faculty__heading-inner">MEET OUR</span>
+                        </span>
+                        <span className="faculty__heading-line faculty__heading-line--accent">
+                            <span className="faculty__heading-inner">EXPERT FACULTY</span>
+                        </span>
                     </h2>
                     <p className="faculty__description">
                         Learn from experienced educators and industry professionals dedicated to shaping the next generation of technology leaders

@@ -6,9 +6,16 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Loader from "./components/Loader";
 import Navigation from "./components/Navigation";
 import Hero from "./components/Hero";
+import Approvals from "./components/Approvals";
 import About from "./components/About";
+import VisionMission from "./components/VisionMission";
+import Campus from "./components/Campus";
+import Gallery from "./components/Gallery";
 import Timeline from "./components/Timeline";
 import Faculty from "./components/Faculty";
+import PlacedStudents from "./components/PlacedStudents";
+import Recruiters from "./components/Recruiters";
+import Newsroom from "./components/Newsroom";
 import Footer from "./components/Footer";
 import "./App.css";
 
@@ -58,10 +65,17 @@ function App() {
 
       <main className="landing-page">
         <Navigation />
-        <Hero />
+        <Hero started={!loading} />
+        <Approvals />
         <About />
+        <VisionMission />
+        <Campus />
+        <Gallery />
         <Timeline />
         <Faculty />
+        <PlacedStudents />
+        <Recruiters />
+        <Newsroom />
         <Footer />
       </main>
     </>

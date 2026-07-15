@@ -1,0 +1,74 @@
+.approvals {
+    position: relative;
+    background: #f5f1eb;
+    color: #11110e;
+    overflow: hidden;
+    padding: clamp(16px, 2vw, 22px) 0;
+    border-top: 1px solid rgba(17, 17, 14, 0.14);
+    border-bottom: 1px solid rgba(17, 17, 14, 0.14);
+}
+
+.approvals__track {
+    display: flex;
+    width: max-content;
+    animation: approvalsScroll 42s linear infinite;
+}
+
+.approvals:hover .approvals__track {
+    animation-play-state: paused;
+}
+
+.approvals__item {
+    display: inline-flex;
+    align-items: center;
+    gap: clamp(20px, 3vw, 44px);
+    padding-right: clamp(20px, 3vw, 44px);
+    font-family: var(--body-font);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: rgba(17, 17, 14, 0.72);
+}
+
+.approvals__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 1px;
+    background: var(--accent, #3b82f6);
+    transform: rotate(45deg);
+    flex-shrink: 0;
+}
+
+.approvals__sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+@keyframes approvalsScroll {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .approvals__track {
+        animation: none;
+        flex-wrap: wrap;
+        width: 100%;
+        justify-content: center;
+        gap: 8px 0;
+    }
+}

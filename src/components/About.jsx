@@ -15,13 +15,16 @@ export default function About() {
 
   const stats = useMemo(
     () => [
-      { end: 95, suffix: "%", label: "Placement Rate" },
-      { end: 90, suffix: "%", label: "Academic Excellence" },
-      { end: 2000, suffix: "+", label: "Hackathon Participations" },
-      { end: 20, suffix: "+", label: "Startups With Funding" },
+      { end: 250, decimals: 0, suffix: "+", label: "Companies visiting HKBK" },
+      { end: 32.4, decimals: 1, suffix: "L", label: "Highest salary offered" },
+      { end: 93.3, decimals: 1, suffix: "%", label: "Students got placed" },
+      { end: 23, decimals: 0, suffix: "+", label: "Startups registered" },
+      { end: 42, decimals: 0, suffix: "K", label: "Highest internship stipend" },
     ],
     []
   );
+
+  const areas = ["hero", "a", "b", "c", "d"];
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
@@ -52,11 +55,15 @@ export default function About() {
 
       numbers.forEach((el) => {
         const end = Number(el.getAttribute("data-end") || "0");
-        const formatter = new Intl.NumberFormat("en-US");
+        const decimals = Number(el.getAttribute("data-decimals") || "0");
+        const formatter = new Intl.NumberFormat("en-US", {
+          minimumFractionDigits: decimals,
+          maximumFractionDigits: decimals,
+        });
         const state = { value: 0 };
 
         const update = () => {
-          el.textContent = formatter.format(Math.round(state.value));
+          el.textContent = formatter.format(state.value);
         };
 
         gsap.to(state, {
@@ -200,8 +207,8 @@ export default function About() {
             <div className="about-story__mediaFrame" ref={mediaFrameRef}>
               <img
                 className="about-story__media"
-                src="/lab.png"
-                alt="Students collaborating in a modern computer lab"
+                src="/Slider-scaled.webp"
+                alt="HKBK Computer Science students walking through campus"
                 loading="lazy"
                 decoding="async"
               />
@@ -224,8 +231,7 @@ export default function About() {
           <div className="about-story__stats">
             {stats.map((item, index) => (
               <article
-                className={`about-story__stat about-story__stat--${index === 0 ? "hero" : index === 1 ? "a" : index === 2 ? "b" : "c"
-                  }`}
+                className={`about-story__stat about-story__stat--${areas[index]}`}
                 key={item.label}
               >
                 <div className="about-story__metric">
@@ -233,6 +239,7 @@ export default function About() {
                     className="about-story__metricNumber"
                     data-counter
                     data-end={item.end}
+                    data-decimals={item.decimals || 0}
                   >
                     0
                   </span>
