@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import useMagnetic from "../hooks/useMagnetic";
 import "./Footer.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -20,8 +21,10 @@ const EXPLORE = [
     { label: "Placements", href: "#placements" },
 ];
 
+const APPLY_URL = "https://www.hkbk.edu.in/";
+
 const RESOURCES = [
-    { label: "Admissions", href: "#apply" },
+    { label: "Admissions", href: APPLY_URL },
     { label: "Contact", href: "#contact" },
 ];
 
@@ -31,6 +34,7 @@ function Footer() {
     const emailRef = useRef(null);
     const ctaRef = useRef(null);
     const metaRef = useRef(null);
+    const applyRef = useMagnetic(0.4);
 
     useLayoutEffect(() => {
         const footer = footerRef.current;
@@ -117,7 +121,13 @@ function Footer() {
                             <br />
                             get in touch!
                         </p>
-                        <a className="footer__cta-link" href="#apply">
+                        <a
+                            className="footer__cta-link"
+                            href={APPLY_URL}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            ref={applyRef}
+                        >
                             Apply Now
                         </a>
                     </div>
@@ -195,11 +205,23 @@ function Footer() {
                     >
                         <h4 className="footer__col-title">Resources</h4>
                         <div className="footer__col-links">
-                            {RESOURCES.map((item) => (
-                                <a key={item.label} href={item.href}>
-                                    {item.label}
-                                </a>
-                            ))}
+                            {RESOURCES.map((item) => {
+                                const ext = item.href.startsWith("http");
+                                return (
+                                    <a
+                                        key={item.label}
+                                        href={item.href}
+                                        {...(ext
+                                            ? {
+                                                  target: "_blank",
+                                                  rel: "noopener noreferrer",
+                                              }
+                                            : {})}
+                                    >
+                                        {item.label}
+                                    </a>
+                                );
+                            })}
                         </div>
                     </nav>
                 </div>

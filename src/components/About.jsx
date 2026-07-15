@@ -226,7 +226,7 @@ export default function About() {
         </div>
       </div>
 
-      <div className="about-story__statsSection" id="placements" ref={statsSectionRef}>
+      <div className="about-story__statsSection" ref={statsSectionRef}>
         <div className="about-story__statsWrap">
           <div className="about-story__stats">
             {stats.map((item, index) => (

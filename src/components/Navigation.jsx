@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import useMagnetic from "../hooks/useMagnetic";
 import "./Navigation.css";
 
 const NAV_ITEMS = [
@@ -11,6 +12,8 @@ const NAV_ITEMS = [
   { href: "#contact", label: "Contact" },
 ];
 
+const APPLY_URL = "https://www.hkbk.edu.in/";
+
 export default function Navigation() {
   const navRef = useRef(null);
   const drawerRef = useRef(null);
@@ -19,6 +22,7 @@ export default function Navigation() {
   const [videoEnded, setVideoEnded] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
+  const applyRef = useMagnetic(0.4);
 
   useEffect(() => {
     const setProgress = gsap.quickSetter(progressRef.current, "scaleX");
@@ -151,7 +155,13 @@ export default function Navigation() {
           );
         })}
       </nav>
-      <a className="apply-button" href="#apply">
+      <a
+        className="apply-button"
+        href={APPLY_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        ref={applyRef}
+      >
         Apply Now
       </a>
 
@@ -193,7 +203,9 @@ export default function Navigation() {
         </nav>
         <a
           className="nav-drawer-apply"
-          href="#apply"
+          href={APPLY_URL}
+          target="_blank"
+          rel="noopener noreferrer"
           onClick={() => setMenuOpen(false)}
           tabIndex={menuOpen ? 0 : -1}
         >
